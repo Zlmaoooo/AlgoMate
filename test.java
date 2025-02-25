@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,34 +21,37 @@ public class test {
     private List<String> historyList = new ArrayList<>();
 
     public test() {
-        // Frame styling
+        // Main frame styling
         frame = new JFrame("Modern Scientific Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(420, 680);
         frame.setLayout(new BorderLayout());
-        frame.getContentPane().setBackground(new Color(30, 30, 30));  // dark background
+        frame.getContentPane().setBackground(new Color(30, 30, 30));
 
-        // Top panel: display and control buttons (theme toggle and history)
+        // Top panel holds display and control buttons
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         topPanel.setBackground(frame.getContentPane().getBackground());
+        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Display field styling
+        // Display field (modern flat style)
         display = new JTextField();
         display.setFont(new Font("SansSerif", Font.BOLD, 32));
         display.setHorizontalAlignment(JTextField.RIGHT);
+        display.setBackground(new Color(20, 20, 20));
+        display.setForeground(new Color(0, 255, 0));
         display.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(0, 200, 0), 2, true),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                new LineBorder(new Color(0, 200, 0), 2, true),
+                new EmptyBorder(10, 10, 10, 10)
         ));
         topPanel.add(display, BorderLayout.CENTER);
 
-        // Create a panel for the control buttons on the top right
-        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        // Control panel for theme toggle and history buttons
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         controlPanel.setOpaque(false);
-        // Theme toggle button
+
         themeToggleButton = new JButton("Toggle Theme");
         themeToggleButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        themeToggleButton.setFocusPainted(false);
         themeToggleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,9 +60,9 @@ public class test {
         });
         controlPanel.add(themeToggleButton);
 
-        // History button
         historyButton = new JButton("History");
         historyButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        historyButton.setFocusPainted(false);
         historyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,16 +70,16 @@ public class test {
             }
         });
         controlPanel.add(historyButton);
+
         topPanel.add(controlPanel, BorderLayout.EAST);
         frame.add(topPanel, BorderLayout.NORTH);
 
-        // Button panel configuration
-        buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(6, 5, 8, 8));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        // Button panel with a modern grid layout; increased gaps for a spacious feel
+        buttonPanel = new JPanel(new GridLayout(6, 5, 10, 10));
+        buttonPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         frame.add(buttonPanel, BorderLayout.CENTER);
 
-        // Define buttons (functions, numbers, operators, and extra keys for parentheses)
+        // Define buttons
         String[] buttons = {
             "sin", "cos", "tan", "log", "sqrt",
             "(", ")", "^", "%", "C",
@@ -86,31 +90,30 @@ public class test {
 
         // Create and style the buttons
         for (String text : buttons) {
-            JButton button = new JButton(text);
-            button.setFont(new Font("SansSerif", Font.BOLD, 22));
-            button.setFocusPainted(false);
-            button.setBorder(new LineBorder(new Color(60, 60, 60), 2, true));
-            button.addActionListener(new ButtonClickListener());
-            // Save the button for theme updates later
-            buttonList.add(button);
-            buttonPanel.add(button);
+            JButton btn = new JButton(text);
+            btn.setFont(new Font("SansSerif", Font.BOLD, 22));
+            btn.setFocusPainted(false);
+            btn.setBorder(new LineBorder(new Color(60, 60, 60), 2, true));
+            btn.addActionListener(new ButtonClickListener());
+            buttonList.add(btn);
+            buttonPanel.add(btn);
         }
-        
+
         updateTheme(); // set initial theme
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-    // Toggles between dark and light themes
+
+    // Toggle between dark and light theme
     private void toggleTheme() {
         isDarkTheme = !isDarkTheme;
         updateTheme();
     }
-    
-    // Updates UI components based on the current theme
+
+    // Update UI components based on current theme
     private void updateTheme() {
         if (isDarkTheme) {
-            // Dark Theme Settings
+            // Dark theme settings
             frame.getContentPane().setBackground(new Color(30, 30, 30));
             buttonPanel.setBackground(new Color(30, 30, 30));
             display.setBackground(new Color(20, 20, 20));
@@ -119,30 +122,29 @@ public class test {
             themeToggleButton.setForeground(Color.WHITE);
             historyButton.setBackground(new Color(60, 60, 60));
             historyButton.setForeground(Color.WHITE);
-            
-            // Update buttons
-            for (JButton button : buttonList) {
-                String text = button.getText();
-                if ("sin cos tan log sqrt".contains(text)) {
-                    button.setBackground(new Color(70, 130, 180)); // steel blue for functions
-                    button.setForeground(Color.WHITE);
-                } else if ("C".equals(text)) {
-                    button.setBackground(new Color(220, 20, 60)); // crimson for clear
-                    button.setForeground(Color.WHITE);
-                } else if ("=".equals(text)) {
-                    button.setBackground(new Color(34, 139, 34)); // forest green for equals
-                    button.setForeground(Color.WHITE);
-                } else if ("()+-/*^%".contains(text)) {
-                    button.setBackground(new Color(105, 105, 105)); // dim gray for operators/parentheses
-                    button.setForeground(Color.WHITE);
-                } else { 
-                    // Number buttons
-                    button.setBackground(new Color(245, 245, 245));
-                    button.setForeground(Color.BLACK);
+
+            // Update calculator buttons (dark theme colors)
+            for (JButton btn : buttonList) {
+                String txt = btn.getText();
+                if ("sin cos tan log sqrt".contains(txt)) {
+                    btn.setBackground(new Color(70, 130, 180)); // steel blue
+                    btn.setForeground(Color.WHITE);
+                } else if ("C".equals(txt)) {
+                    btn.setBackground(new Color(220, 20, 60)); // crimson clear
+                    btn.setForeground(Color.WHITE);
+                } else if ("=".equals(txt)) {
+                    btn.setBackground(new Color(34, 139, 34)); // forest green equals
+                    btn.setForeground(Color.WHITE);
+                } else if ("()+-/*^%".contains(txt)) {
+                    btn.setBackground(new Color(105, 105, 105)); // dim gray operators
+                    btn.setForeground(Color.WHITE);
+                } else { // numbers
+                    btn.setBackground(new Color(245, 245, 245));
+                    btn.setForeground(Color.BLACK);
                 }
             }
         } else {
-            // Light Theme Settings (white, grey and red accents)
+            // Light theme settings (white, grey, red accents)
             frame.getContentPane().setBackground(new Color(240, 240, 240));
             buttonPanel.setBackground(new Color(240, 240, 240));
             display.setBackground(Color.WHITE);
@@ -152,48 +154,50 @@ public class test {
             historyButton.setBackground(new Color(211, 211, 211));
             historyButton.setForeground(Color.BLACK);
             
-            // Update buttons for light theme
-            for (JButton button : buttonList) {
-                String text = button.getText();
-                if ("sin cos tan log sqrt".contains(text)) {
-                    button.setBackground(new Color(211, 211, 211)); // light grey for functions
-                    button.setForeground(Color.BLACK);
-                } else if ("C".equals(text)) {
-                    button.setBackground(new Color(255, 69, 0)); // orange red for clear
-                    button.setForeground(Color.WHITE);
-                } else if ("=".equals(text)) {
-                    button.setBackground(new Color(192, 192, 192)); // silver for equals
-                    button.setForeground(Color.BLACK);
-                } else if ("()+-/*^%".contains(text)) {
-                    button.setBackground(new Color(211, 211, 211)); // light grey for operators/parentheses
-                    button.setForeground(Color.BLACK);
-                } else { 
-                    // Number buttons
-                    button.setBackground(Color.WHITE);
-                    button.setForeground(Color.BLACK);
+            // Update calculator buttons (light theme colors)
+            for (JButton btn : buttonList) {
+                String txt = btn.getText();
+                if ("sin cos tan log sqrt".contains(txt)) {
+                    btn.setBackground(new Color(211, 211, 211)); // light grey for functions
+                    btn.setForeground(Color.BLACK);
+                } else if ("C".equals(txt)) {
+                    btn.setBackground(new Color(255, 69, 0)); // orange red for clear
+                    btn.setForeground(Color.WHITE);
+                } else if ("=".equals(txt)) {
+                    btn.setBackground(new Color(192, 192, 192)); // silver for equals
+                    btn.setForeground(Color.BLACK);
+                } else if ("()+-/*^%".contains(txt)) {
+                    btn.setBackground(new Color(211, 211, 211)); // light grey for operators/parentheses
+                    btn.setForeground(Color.BLACK);
+                } else { // numbers
+                    btn.setBackground(Color.WHITE);
+                    btn.setForeground(Color.BLACK);
                 }
             }
         }
     }
-    
-    // Displays calculation history in a pop-up dialog.
+
+    // Display calculation history in a modern styled dialog
     private void showHistory() {
         if (historyList.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "No history available.", "History", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            StringBuilder historyText = new StringBuilder();
-            for (String record : historyList) {
-                historyText.append(record).append("\n");
+            StringBuilder sb = new StringBuilder();
+            for (String rec : historyList) {
+                sb.append(rec).append("\n");
             }
-            JTextArea textArea = new JTextArea(historyText.toString());
-            textArea.setEditable(false);
-            textArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-            JScrollPane scrollPane = new JScrollPane(textArea);
+            JTextArea historyArea = new JTextArea(sb.toString());
+            historyArea.setEditable(false);
+            historyArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+            historyArea.setBackground(isDarkTheme ? new Color(20, 20, 20) : Color.WHITE);
+            historyArea.setForeground(isDarkTheme ? new Color(0, 255, 0) : Color.BLACK);
+            JScrollPane scrollPane = new JScrollPane(historyArea);
             scrollPane.setPreferredSize(new Dimension(350, 400));
-            JOptionPane.showMessageDialog(frame, scrollPane, "History", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, scrollPane, "Calculation History", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
+    // Listener for calculator buttons
     private class ButtonClickListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -234,7 +238,7 @@ public class test {
     }
     
     public static void main(String[] args) {
-        new test();
+        SwingUtilities.invokeLater(() -> new test());
     }
 }
 
@@ -245,13 +249,11 @@ class ExpressionEvaluator {
             while (expression.contains(func)) {
                 int funcIndex = expression.indexOf(func);
                 int startIndex = expression.indexOf("(", funcIndex);
-                if (startIndex == -1) {
+                if (startIndex == -1)
                     throw new RuntimeException("Missing opening parenthesis for function " + func);
-                }
                 int endIndex = findClosingParen(expression, startIndex);
-                if (endIndex == -1) {
+                if (endIndex == -1)
                     throw new RuntimeException("Missing closing parenthesis for function " + func);
-                }
                 String innerExpr = expression.substring(startIndex + 1, endIndex);
                 double innerValue = MathEvaluator.evaluate(innerExpr);
                 double result = 0;
@@ -303,8 +305,7 @@ class MathEvaluator {
             char c = expression.charAt(i);
             if (Character.isDigit(c) || c == '.') {
                 StringBuilder sb = new StringBuilder();
-                while (i < expression.length() &&
-                       (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) {
+                while (i < expression.length() && (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) {
                     sb.append(expression.charAt(i));
                     i++;
                 }
