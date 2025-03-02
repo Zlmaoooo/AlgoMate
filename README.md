@@ -1,21 +1,21 @@
-# AlgoMate 🚀
+# AlgoMate GUI 🚀
 
-AlgoMate is a **feature-rich advanced calculator** built with Java Swing. It provides a clean and interactive GUI to perform basic and advanced arithmetic operations seamlessly. This project was developed as part of our **college team project**, where we explored Java GUI programming and Git collaboration.
+AlgoMate GUI is a **feature-rich advanced calculator** built with Java Swing. It provides a clean and interactive GUI to perform basic and advanced arithmetic operations seamlessly. This project was developed as part of our **college team project**, where we explored Java GUI programming and Git collaboration.
 
 ---
 
 ## ✨ Features
 
-- 📌 **User-friendly GUI** with interactive buttons
+- 📌 **Graphical User Interface (GUI)** with interactive buttons
 - 🔢 **Basic Arithmetic Operations** (Addition, Subtraction, Multiplication, Division)
 - 🧮 **Advanced Calculation Support** (Expression evaluation)
 - 🎨 **Modern Interface** using Java Swing
 
 ---
 
-## 📸 Preview
+## 📸 GUI Preview
 
-(Attach screenshots or GIFs of your application here)
+(Add screenshots or GIFs of the application here)
 
 ---
 
@@ -29,22 +29,22 @@ AlgoMate is a **feature-rich advanced calculator** built with Java Swing. It pro
 
 ## 📥 Installation & Running the Project
 
-Follow these steps to clone and run **AlgoMate** locally:
+Follow these steps to clone and run **AlgoMate GUI** locally:
 
 ### 🔹 Clone the Repository
 ```sh
- git clone https://github.com/Zlmaoooo/AlgoMate.git
+git clone https://github.com/Zlmaoooo/AlgoMate.git
 ```
 
 ### 🔹 Navigate to the Project Directory
 ```sh
- cd AlgoMate
+cd AlgoMate
 ```
 
 ### 🔹 Compile and Run
 ```sh
- javac AlgoMate.java  # Compile the Java files
- java AlgoMate        # Run the application
+javac AlgoMateGUI.java  # Compile the Java files
+java AlgoMateGUI        # Run the GUI application
 ```
 
 ---
